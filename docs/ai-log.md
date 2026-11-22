@@ -101,3 +101,91 @@ Aby ograniczyć straty, przyspieszyć pracę magazynu i zwiększyć zyski, rekom
 13. **Wyniki są podzielone na strony** — liczba pozycji pasujących do filtrów może być większa niż liczba pokazana na pierwszej stronie.
 14. **Wyniki nie ładują się z powodu błędu katalogu** — awaria lub przekroczenie czasu odpowiedzi może zostać pomylone z sytuacją, w której żadna gra nie spełnia filtrów.
 15. **Brak wyników, ale kolejka jest niedostępna dla danego tytułu** — sugestia zapisu może być nieaktualna lub nie mieć zastosowania, gdy kolejka nie istnieje albo klient już do niej należy.
+
+## Ćwiczenie „Łowca luk” — R-04 Kolejkowanie niedostępnego egzemplarza (Must)
+
+Wybrana historyjka: **R-04** (jedna historyjka z trzech Must, na ćwiczenie).
+Prompt: „Łowca luk” z pasta z zajęć. Wynik: 15 przypadków brzegowych.
+
+| # | Sytuacja | Decyzja | Uzasadnienie |
+| --- | --- | --- | --- |
+| 1 | Klient jest już w kolejce na ten tytuł i zapisuje się ponownie | Kryterium | Oczywista luka, system nie blokuje duplikatu |
+| 2 | Klient wypożyczył już tę grę i zapisuje się do kolejki na nią | Odrzucone | pokryte |
+| 3 | Egzemplarz wraca, ale weryfikacja daje wynik „uszkodzony” | Kryterium | Kolejka nie może dostać uszkodzonego egzemplarza |
+| 4 | Egzemplarz wraca, a kolejka jest pusta | Odrzucone | pokryte |
+| 5 | Dwa egzemplarze tego samego tytułu wracają jednocześnie | Nowa historyjka | Wiele egzemplarzy w kolejce to osobny przepływ |
+| 6 | Pierwsza osoba w kolejce ma już 3 aktywne wypożyczenia | Kryterium | Interakcja z limitem R-02 |
+| 7 | Pierwsza osoba usuwa lub traci konto podczas oczekiwania | Kryterium | Martwy wpis blokowałby egzemplarz |
+| 8 | Klient anuluje zapis w tej samej chwili, gdy egzemplarz jest rezerwowany | Odrzucone | pokryte |
+| 9 | Klient płaci dokładnie po upływie 24h | Kryterium | Granica terminu musi być jednoznaczna |
+| 10 | Wysyłka powiadomienia się nie udaje, a 24h już biegnie | Nowa historyjka | Obsługa awarii powiadomień to osobny temat |
+| 11 | Operator płatności jest niedostępny przy opłacie rezerwacji | Odrzucone | zależność |
+| 12 | Egzemplarz w kolejce zostaje wycofany | Kryterium | Status „Wycofany” zamyka kolejkę |
+| 13 | Wybrany okres (7/14/30 dni) w zamówieniu z kolejki | Odrzucone | niezwiązane |
+| 14 | Zarezerwowany egzemplarz trafia do serwisu | Odrzucone | pokryte |
+| 15 | Setki zapisów w dniu premiery | Odrzucone | pokryte |
+
+Efekt:
+- **Dopisano do R-04 w `historyjki.md`** (kryteria 1, 3, 6, 7, 9, 12).
+- **Propozycje nowych historyjek** (do decyzji zespołu, nie dodane do pliku): wielokrotne egzemplarze w kolejce (poz. 5), awaria powiadomień o rezerwacji (poz. 10).
+- **Odrzucone** z jednym słowem uzasadnienia: poz. 2, 4, 8, 11, 13, 14, 15.
+
+Uwaga do ćwiczenia: sam prompt wygenerował przypadki, ale ich wybór i uzasadnienia
+są do weryfikacji przez zespół. Część „pokryte” opiera się na wymaganiach
+niefunkcjonalnych (np. brak dublowania rezerwacji).
+
+---
+
+## Ćwiczenie „Łowca luk” — R-02 Limit 3 aktywnych wypożyczeń (Must)
+
+Druga historyjka z trzech Must (ta sama procedura co R-04).
+
+| # | Sytuacja | Decyzja | Uzasadnienie |
+| --- | --- | --- | --- |
+| 1 | Zestaw konsola + gry: ile pozycji liczy się do limitu | Kryterium | Wymagania mówią „niezależnie od zestawu”, ale nie liczbę |
+| 2 | Koszyk z 3 grami przy 1 aktywnej: limit sprawdzany dla całego zamówienia | Kryterium | Brak zasady dla wielu pozycji naraz |
+| 3 | Dwie karty/okna zatwierdzają zamówienia równolegle | Odrzucone | duplikat |
+| 4 | Zamówienie w statusie „Wysłany” przed odbiorem | Kryterium | „Aktywne” nie jest zdefiniowane |
+| 5 | Zamówienie anulowane po nieodebraniu | Kryterium | Anulowana pozycja nie może blokować limitu |
+| 6 | Egzemplarz w „Weryfikacja / Czyszczenie” po zwrocie | Kryterium | Status przejściowy, nie wiadomo, czy liczy się do limitu |
+| 7 | Rezerwacja z kolejki (R-04) przy 2 aktywnych | Kryterium | Interakcja z R-04 |
+| 8 | Przedłużenie wypożyczenia (R-06) zwiększa licznik | Odrzucone | pokryte |
+| 9 | Egzemplarz wycofany w trakcie wypożyczenia | Kryterium | Zwolnienie slotu |
+| 10 | Administrator obchodzi limit na koncie | Odrzucone | zakres |
+| 11 | Pracownik ręcznie wypożycza ponad limit | Nowa historyjka | Wyjątki dla personelu to osobny przypadek użycia |
+| 12 | Admin zmienia wartość limitu w trakcie działania | Odrzucone | zakres |
+| 13 | Dwa konta na jedną kartę obchodzą limit | Odrzucone | pokryte |
+| 14 | Błąd bazy przy sprawdzaniu limitu | Kryterium | Zasada „brak wpuszczenia przy błędzie” |
+| 15 | Ten sam klient w dwóch oknach, jedna gra w koszyku | Odrzucone | duplikat |
+
+Efekt:
+- **Dopisano do R-02 w `historyjki.md`** (kryteria 1, 2, 4, 5, 6, 7, 9, 14).
+- **Propozycja nowej historyjki:** wyjątki od limitu dla pracownika (poz. 11).
+- **Odrzucone:** poz. 3, 8, 10, 12, 13, 15.
+1. **Wykrycie zwrotu po API kuriera:** Przesyłka otrzymuje status Nieodebrana / Zwrot do nadawcy, a zamówienie przechodzi w stan Nieodebrana – w drodze powrotnej.
+2. **Powiadomienie klienta:** System automatycznie wysyła informację (e-mail/SMS), że paczka nie została odebrana w terminie, zamówienie zostaje anulowane, a rozliczenie nastąpi po powrocie sprzętu na magazyn.
+3. **Przyjęcie na magazyn i weryfikacja:** Pracownik skanuje kod zwrotu i potwierdza nienaruszony stan paczki.
+4. **Automatyczne rozliczenie i zwrot do puli:**
+   - Bramka płatnicza automatycznie wykonuje częściowy zwrot (dla wariantów 14/30 dni) i zwalnia blokadę kaucji.
+   - Status zamówienia zmienia się na Anulowane (nieodebrane).
+   - Egzemplarz wraca do statusu Dostępny lub automatycznie wpada jako rezerwacja dla pierwszej osoby w kolejce.
+   - Jeśli klient nadal chce zagrać w dany tytuł, po prostu składa nowe zamówienie na standardowych zasadach.
+
+### AI Łowca Luk
+
+
+1. **Gra ma kilka egzemplarzy o różnych statusach** — może być niejasne, czy tytuł jest dostępny, gdy tylko część jego egzemplarzy czeka na wypożyczenie.
+2. **Egzemplarz jest zarezerwowany, ale jeszcze nie został wysłany** — może zostać błędnie uznany za dostępny, jeśli rezerwacja nie jest uwzględniana w filtrze.
+3. **Zwrócona gra ma status „weryfikacja / czyszczenie”** — może pojawić się w wynikach jako dostępna, mimo że nie jest jeszcze gotowa do wypożyczenia.
+4. **Gra jest opóźniona lub w drodze powrotnej** — status może zostać pomylony z dostępnością, choć egzemplarz nadal nie znajduje się w magazynie.
+5. **Dostępność zmienia się w trakcie wyszukiwania** — egzemplarz może zostać wypożyczony lub zarezerwowany między pobraniem wyników a ich wyświetleniem.
+6. **Katalog zawiera tę samą grę w kilku wydaniach** — edycje, wersje regionalne lub różne nośniki mogą zostać potraktowane jako jeden tytuł albo jako osobne pozycje.
+7. **Gra ma przypisanych kilka gatunków** — nie jest określone, czy filtr ma zwracać pozycje pasujące do każdego wybranego gatunku, czy do dowolnego z nich.
+8. **Klient wybiera kilka platform jednocześnie** — kryteria nie określają, czy wyniki mają pasować do wszystkich platform, czy do przynajmniej jednej.
+9. **Dane platformy mają różne nazwy lub formaty** — niespójne zapisy w katalogu mogą sprawić, że część gier nie zostanie dopasowana do filtra.
+10. **Gra nie ma przypisanego gatunku albo platformy** — brak metadanych może wykluczyć ją z wyników, mimo że pozostałe kryteria pasują.
+11. **Klient zatwierdza wyszukiwanie bez ustawienia filtrów** — nie wiadomo, czy ma wtedy zobaczyć cały katalog, czy komunikat o braku pozycji.
+12. **Filtry wzajemnie się wykluczają** — na przykład wybrana platforma i gatunek mogą nie mieć żadnego wspólnego tytułu.
+13. **Wyniki są podzielone na strony** — liczba pozycji pasujących do filtrów może być większa niż liczba pokazana na pierwszej stronie.
+14. **Wyniki nie ładują się z powodu błędu katalogu** — awaria lub przekroczenie czasu odpowiedzi może zostać pomylone z sytuacją, w której żadna gra nie spełnia filtrów.
+15. **Brak wyników, ale kolejka jest niedostępna dla danego tytułu** — sugestia zapisu może być nieaktualna lub nie mieć zastosowania, gdy kolejka nie istnieje albo klient już do niej należy.

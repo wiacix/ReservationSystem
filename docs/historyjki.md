@@ -43,6 +43,40 @@ Sytuacja błędna:
 - **Gdy** klient ponawia wypożyczenie czwartej gry
 - **Wtedy** system akceptuje je, bo liczba aktywnych spadła do 2
 
+Sytuacje brzegowe (z ćwiczenia „Łowca luk”, zatwierdzone do kryteriów):
+
+- **Zakładając**, że klient ma 2 aktywne wypożyczenia i zamawia zestaw konsola + 2 gry
+- **Gdy** zatwierdza zamówienie
+- **Wtedy** system liczy każdą grę w zestawie (4 pozycje) i odrzuca zamówienie z informacją o limicie
+
+- **Zakładając**, że klient ma 1 aktywne wypożyczenie i w jednym koszyku dodał 3 gry
+- **Gdy** zatwierdza zamówienie
+- **Wtedy** system sprawdza limit dla całego zamówienia i odrzuca je w całości, jeśli wynik przekracza 3
+
+- **Zakładając**, że klient ma 2 aktywne wypożyczenia i zamówienie w statusie „Wysłany”
+- **Gdy** system liczy aktywne pozycje
+- **Wtedy** zamówienie wysłane liczy się do limitu od momentu nadania
+
+- **Zakładając**, że zamówienie zostało anulowane po nieodebraniu
+- **Gdy** system liczy aktywne pozycje
+- **Wtedy** anulowana pozycja nie liczy się do limitu
+
+- **Zakładając**, że egzemplarz wrócił i ma status „Weryfikacja / Czyszczenie”
+- **Gdy** system liczy aktywne pozycje
+- **Wtedy** egzemplarz nie liczy się do limitu, ponieważ klient go oddał
+
+- **Zakładając**, że klient ma 2 aktywne wypożyczenia i rezerwację z kolejki (R-04)
+- **Gdy** rezerwacja zostaje opłacona
+- **Wtedy** rezerwacja liczy się do limitu jak zwykłe wypożyczenie
+
+- **Zakładając**, że klient ma 3 aktywne wypożyczenia, a jeden egzemplarz został wycofany
+- **Gdy** system przetwarza zmianę statusu
+- **Wtedy** klient odzyskuje wolny slot w limicie
+
+- **Zakładając**, że bramka płatnicza lub baza nie odpowiada podczas sprawdzania limitu
+- **Gdy** klient zatwierdza czwartą grę
+- **Wtedy** system odrzuca operację i nie tworzy wypożyczenia (brak wpuszczenia przy błędzie)
+
 INVEST: mała, dotyczy jednej reguły; mierzalna liczbą aktywnych pozycji.
 
 ---
@@ -80,6 +114,32 @@ Sytuacja błędna:
 - **Zakładając**, że klient dostał rezerwację z kolejki
 - **Gdy** nie opłaci jej w ciągu 24h
 - **Wtedy** system zwalnia egzemplarz i przekazuje go następnej osobie w kolejce
+
+Sytuacje brzegowe (z ćwiczenia „Łowca luk”, zatwierdzone do kryteriów):
+
+- **Zakładając**, że klient jest już w kolejce na ten tytuł
+- **Gdy** zapisuje się ponownie
+- **Wtedy** system odrzuca drugi wpis i informuje, że klient już na liście jest
+
+- **Zakładając**, że egzemplarz wraca, ale weryfikacja kończy się wynikiem „uszkodzony”
+- **Gdy** system ma przypisać egzemplarz z kolejki
+- **Wtedy** egzemplarz nie trafia do rezerwacji; kolejka czeka na kolejny zwrot, a uszkodzenie obsługuje R-10
+
+- **Zakładając**, że pierwsza osoba w kolejce ma już 3 aktywne wypożyczenia (R-02)
+- **Gdy** egzemplarz jest gotowy do rezerwacji
+- **Wtedy** system pomija tę osobę i rezerwuje egzemplarz dla następnej, z limitem
+
+- **Zakładając**, że pierwsza osoba w kolejce usunęła lub zablokowała konto
+- **Gdy** egzemplarz jest gotowy do rezerwacji
+- **Wtedy** jej wpis znika z kolejki, a egzemplarz trafia do następnej osoby
+
+- **Zakładając**, że klient ma zarezerwowany egzemplarz z kolejki
+- **Gdy** opłaca go dokładnie po upływie 24h
+- **Wtedy** płatność jest odrzucona, a rezerwacja już nie istnieje (zasada z pierwszej sytuacji błędnej)
+
+- **Zakładając**, że egzemplarz w kolejce zostaje wycofany (status „Wycofany”)
+- **Gdy** system przetwarza zmianę statusu
+- **Wtedy** kolejka na ten egzemplarz zostaje zamknięta, a klienci dostają informację
 
 INVEST: testowalna przez symulację zwrotu i upływu czasu; negocjowalna (czas 24h).
 

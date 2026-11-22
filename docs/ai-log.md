@@ -189,3 +189,23 @@ Efekt:
 13. **Wyniki są podzielone na strony** — liczba pozycji pasujących do filtrów może być większa niż liczba pokazana na pierwszej stronie.
 14. **Wyniki nie ładują się z powodu błędu katalogu** — awaria lub przekroczenie czasu odpowiedzi może zostać pomylone z sytuacją, w której żadna gra nie spełnia filtrów.
 15. **Brak wyników, ale kolejka jest niedostępna dla danego tytułu** — sugestia zapisu może być nieaktualna lub nie mieć zastosowania, gdy kolejka nie istnieje albo klient już do niej należy.
+
+## Ćwiczenie „Łowca luk” — R-03 Jedno konto na osobę (Must)
+
+Trzecia historyjka z trzech Must.
+
+1. **Jednorazowe karty wirtualne (np. Revolut, Wise)**: Użytkownik używa karty jednorazowej o unikalnym numerze PAN, która po weryfikacji ulega zniszczeniu, co pozwala na wielokrotną rejestrację tej samej osoby.
+2. **Wiele kart do jednego rachunku bankowego**: Ta sama osoba posiada kilka fizycznych lub wirtualnych kart (np. debetową i kredytową) przypisanych do tego samego konta i danych osobowych, ale o różnych numerach.
+3. **Odnowienie lub zastrzeżenie karty (nowy numer PAN)**: Użytkownik zastrzega zgubioną kartę i otrzymuje z banku nową o innym numerze, dzięki czemu może zarejestrować drugie konto mimo posiadania już pierwszego.
+4. **Karty współdzielone (np. konto małżeńskie lub firmowe)**: Dwie różne osoby posługują się kartami o tym samym numerze (lub jedną kartą), co blokuje drugiej osobie możliwość założenia własnego, legalnego konta.
+5. **Błąd weryfikacji z powodu braku środków lub limitów na karcie**: Preautoryzacja (np. na kwotę 0 lub 1 PLN) zostaje odrzucona przez bank z powodu zablokowanych płatności internetowych lub braku środków na karcie.
+6. **Przekroczenie czasu oczekiwania (timeout) po stronie operatora płatności**: Operator płatności autoryzuje kartę z opóźnieniem po tym, jak system uznał połączenie za zerwane i przerwał proces rejestracji.
+7. **Brak autoryzacji 3D Secure przez użytkownika**: Użytkownik zamyka okno banku lub nie potwierdza transakcji w aplikacji mobilnej w wyznaczonym czasie, pozostawiając proces rejestracji w stanie zawieszenia.
+8. **Równoczesna rejestracja z dwóch sesji (race condition)**: Użytkownik wysyła dwa formularze rejestracyjne z tą samą kartą w ułamku sekundy, zanim pierwszy wpis o karcie zostanie zapisany w bazie jako zajęty.
+9. **Użycie karty przedpłaconej (prepaid) lub podarunkowej**: Użytkownik rejestruje się przy użyciu anonimowej karty przedpłaconej, która nie jest powiązana z żadną konkretną tożsamością.
+10. **Wygasła karta podpięta do istniejącego konta**: Karta na pierwszym koncie straciła ważność, a użytkownik próbuje zarejestrować nowe konto z nową kartą wydaną w miejsce wygasłej.
+11. **Odrzucenie karty przez operatora ze względów bezpieczeństwa (anti-fraud)**: Operator płatności blokuje weryfikację z powodu podejrzenia nadużycia (np. nietypowa lokalizacja IP), mimo że karta jest ważna i unikalna.
+12. **Użycie portfeli cyfrowych (Apple Pay / Google Pay)**: Tokenizacja urządzenia generuje wirtualny numer karty (DPAN) różny od numeru fizycznej karty (FPAN), umożliwiając zarejestrowanie dwóch kont na tę samą kartę.
+13. **Usunięcie konta przez użytkownika i ponowna rejestracja**: Użytkownik korzysta z prawa do bycia zapomnianym (RODO), usuwa konto, a następnie próbuje założyć nowe z tą samą kartą, podczas gdy jej hash nadal figuruje w systemie jako użyty.
+14. **Błędne dane karty wpisane przez użytkownika (literówka)**: Użytkownik podaje niepoprawny numer karty, datę ważności lub kod CVV, co powoduje odrzucenie weryfikacji przed sprawdzeniem duplikatu.
+15. **Karta wydana w kraju lub walucie nieobsługiwanej przez operatora**: Zagraniczny użytkownik próbuje przejść weryfikację kartą spoza obsługiwanego regionu, co skutkuje odrzuceniem autoryzacji przez bramkę płatniczą.

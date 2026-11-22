@@ -81,6 +81,32 @@ Sytuacja błędna:
 - **Gdy** nie opłaci jej w ciągu 24h
 - **Wtedy** system zwalnia egzemplarz i przekazuje go następnej osobie w kolejce
 
+Sytuacje brzegowe (z ćwiczenia „Łowca luk”, zatwierdzone do kryteriów):
+
+- **Zakładając**, że klient jest już w kolejce na ten tytuł
+- **Gdy** zapisuje się ponownie
+- **Wtedy** system odrzuca drugi wpis i informuje, że klient już na liście jest
+
+- **Zakładając**, że egzemplarz wraca, ale weryfikacja kończy się wynikiem „uszkodzony”
+- **Gdy** system ma przypisać egzemplarz z kolejki
+- **Wtedy** egzemplarz nie trafia do rezerwacji; kolejka czeka na kolejny zwrot, a uszkodzenie obsługuje R-10
+
+- **Zakładając**, że pierwsza osoba w kolejce ma już 3 aktywne wypożyczenia (R-02)
+- **Gdy** egzemplarz jest gotowy do rezerwacji
+- **Wtedy** system pomija tę osobę i rezerwuje egzemplarz dla następnej, z limitem
+
+- **Zakładając**, że pierwsza osoba w kolejce usunęła lub zablokowała konto
+- **Gdy** egzemplarz jest gotowy do rezerwacji
+- **Wtedy** jej wpis znika z kolejki, a egzemplarz trafia do następnej osoby
+
+- **Zakładając**, że klient ma zarezerwowany egzemplarz z kolejki
+- **Gdy** opłaca go dokładnie po upływie 24h
+- **Wtedy** płatność jest odrzucona, a rezerwacja już nie istnieje (zasada z pierwszej sytuacji błędnej)
+
+- **Zakładając**, że egzemplarz w kolejce zostaje wycofany (status „Wycofany”)
+- **Gdy** system przetwarza zmianę statusu
+- **Wtedy** kolejka na ten egzemplarz zostaje zamknięta, a klienci dostają informację
+
 INVEST: testowalna przez symulację zwrotu i upływu czasu; negocjowalna (czas 24h).
 
 ---

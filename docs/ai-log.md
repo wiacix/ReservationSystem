@@ -97,3 +97,32 @@ Efekt:
 Uwaga do ćwiczenia: sam prompt wygenerował przypadki, ale ich wybór i uzasadnienia
 są do weryfikacji przez zespół. Część „pokryte” opiera się na wymaganiach
 niefunkcjonalnych (np. brak dublowania rezerwacji).
+
+---
+
+## Ćwiczenie „Łowca luk” — R-02 Limit 3 aktywnych wypożyczeń (Must)
+
+Druga historyjka z trzech Must (ta sama procedura co R-04).
+
+| # | Sytuacja | Decyzja | Uzasadnienie |
+| --- | --- | --- | --- |
+| 1 | Zestaw konsola + gry: ile pozycji liczy się do limitu | Kryterium | Wymagania mówią „niezależnie od zestawu”, ale nie liczbę |
+| 2 | Koszyk z 3 grami przy 1 aktywnej: limit sprawdzany dla całego zamówienia | Kryterium | Brak zasady dla wielu pozycji naraz |
+| 3 | Dwie karty/okna zatwierdzają zamówienia równolegle | Odrzucone | duplikat |
+| 4 | Zamówienie w statusie „Wysłany” przed odbiorem | Kryterium | „Aktywne” nie jest zdefiniowane |
+| 5 | Zamówienie anulowane po nieodebraniu | Kryterium | Anulowana pozycja nie może blokować limitu |
+| 6 | Egzemplarz w „Weryfikacja / Czyszczenie” po zwrocie | Kryterium | Status przejściowy, nie wiadomo, czy liczy się do limitu |
+| 7 | Rezerwacja z kolejki (R-04) przy 2 aktywnych | Kryterium | Interakcja z R-04 |
+| 8 | Przedłużenie wypożyczenia (R-06) zwiększa licznik | Odrzucone | pokryte |
+| 9 | Egzemplarz wycofany w trakcie wypożyczenia | Kryterium | Zwolnienie slotu |
+| 10 | Administrator obchodzi limit na koncie | Odrzucone | zakres |
+| 11 | Pracownik ręcznie wypożycza ponad limit | Nowa historyjka | Wyjątki dla personelu to osobny przypadek użycia |
+| 12 | Admin zmienia wartość limitu w trakcie działania | Odrzucone | zakres |
+| 13 | Dwa konta na jedną kartę obchodzą limit | Odrzucone | pokryte |
+| 14 | Błąd bazy przy sprawdzaniu limitu | Kryterium | Zasada „brak wpuszczenia przy błędzie” |
+| 15 | Ten sam klient w dwóch oknach, jedna gra w koszyku | Odrzucone | duplikat |
+
+Efekt:
+- **Dopisano do R-02 w `historyjki.md`** (kryteria 1, 2, 4, 5, 6, 7, 9, 14).
+- **Propozycja nowej historyjki:** wyjątki od limitu dla pracownika (poz. 11).
+- **Odrzucone:** poz. 3, 8, 10, 12, 13, 15.

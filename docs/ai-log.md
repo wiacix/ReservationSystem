@@ -126,3 +126,30 @@ Efekt:
 - **Dopisano do R-02 w `historyjki.md`** (kryteria 1, 2, 4, 5, 6, 7, 9, 14).
 - **Propozycja nowej historyjki:** wyjątki od limitu dla pracownika (poz. 11).
 - **Odrzucone:** poz. 3, 8, 10, 12, 13, 15.
+1. **Wykrycie zwrotu po API kuriera:** Przesyłka otrzymuje status Nieodebrana / Zwrot do nadawcy, a zamówienie przechodzi w stan Nieodebrana – w drodze powrotnej.
+2. **Powiadomienie klienta:** System automatycznie wysyła informację (e-mail/SMS), że paczka nie została odebrana w terminie, zamówienie zostaje anulowane, a rozliczenie nastąpi po powrocie sprzętu na magazyn.
+3. **Przyjęcie na magazyn i weryfikacja:** Pracownik skanuje kod zwrotu i potwierdza nienaruszony stan paczki.
+4. **Automatyczne rozliczenie i zwrot do puli:**
+   - Bramka płatnicza automatycznie wykonuje częściowy zwrot (dla wariantów 14/30 dni) i zwalnia blokadę kaucji.
+   - Status zamówienia zmienia się na Anulowane (nieodebrane).
+   - Egzemplarz wraca do statusu Dostępny lub automatycznie wpada jako rezerwacja dla pierwszej osoby w kolejce.
+   - Jeśli klient nadal chce zagrać w dany tytuł, po prostu składa nowe zamówienie na standardowych zasadach.
+
+### AI Łowca Luk
+
+
+1. **Gra ma kilka egzemplarzy o różnych statusach** — może być niejasne, czy tytuł jest dostępny, gdy tylko część jego egzemplarzy czeka na wypożyczenie.
+2. **Egzemplarz jest zarezerwowany, ale jeszcze nie został wysłany** — może zostać błędnie uznany za dostępny, jeśli rezerwacja nie jest uwzględniana w filtrze.
+3. **Zwrócona gra ma status „weryfikacja / czyszczenie”** — może pojawić się w wynikach jako dostępna, mimo że nie jest jeszcze gotowa do wypożyczenia.
+4. **Gra jest opóźniona lub w drodze powrotnej** — status może zostać pomylony z dostępnością, choć egzemplarz nadal nie znajduje się w magazynie.
+5. **Dostępność zmienia się w trakcie wyszukiwania** — egzemplarz może zostać wypożyczony lub zarezerwowany między pobraniem wyników a ich wyświetleniem.
+6. **Katalog zawiera tę samą grę w kilku wydaniach** — edycje, wersje regionalne lub różne nośniki mogą zostać potraktowane jako jeden tytuł albo jako osobne pozycje.
+7. **Gra ma przypisanych kilka gatunków** — nie jest określone, czy filtr ma zwracać pozycje pasujące do każdego wybranego gatunku, czy do dowolnego z nich.
+8. **Klient wybiera kilka platform jednocześnie** — kryteria nie określają, czy wyniki mają pasować do wszystkich platform, czy do przynajmniej jednej.
+9. **Dane platformy mają różne nazwy lub formaty** — niespójne zapisy w katalogu mogą sprawić, że część gier nie zostanie dopasowana do filtra.
+10. **Gra nie ma przypisanego gatunku albo platformy** — brak metadanych może wykluczyć ją z wyników, mimo że pozostałe kryteria pasują.
+11. **Klient zatwierdza wyszukiwanie bez ustawienia filtrów** — nie wiadomo, czy ma wtedy zobaczyć cały katalog, czy komunikat o braku pozycji.
+12. **Filtry wzajemnie się wykluczają** — na przykład wybrana platforma i gatunek mogą nie mieć żadnego wspólnego tytułu.
+13. **Wyniki są podzielone na strony** — liczba pozycji pasujących do filtrów może być większa niż liczba pokazana na pierwszej stronie.
+14. **Wyniki nie ładują się z powodu błędu katalogu** — awaria lub przekroczenie czasu odpowiedzi może zostać pomylone z sytuacją, w której żadna gra nie spełnia filtrów.
+15. **Brak wyników, ale kolejka jest niedostępna dla danego tytułu** — sugestia zapisu może być nieaktualna lub nie mieć zastosowania, gdy kolejka nie istnieje albo klient już do niej należy.
